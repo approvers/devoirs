@@ -1,0 +1,21 @@
+{
+  "name": "devoirs",
+  "description": "Lists assignments in all classes on Microsoft 365 Education.",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Naoki Ikeguchi <root@siketyan.dev>",
+  "license": "MIT",
+  "homepage": "https://github.com/approvers/devoirs#readme",
+  "bugs": {
+    "url": "https://github.com/approvers/devoirs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/approvers/devoirs.git"
+  },
+  "keywords": [
+    "microsoft-365",
+    "microsoft-teams"
+  ],
+  "scripts": {}
+}
