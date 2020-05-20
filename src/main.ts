@@ -9,10 +9,10 @@ import { Authorizer } from './services/authorizer';
   const tokenProvider = new SavedTokenProvider(tokenStorage, authorizer);
   const client = new ApiClient(tokenProvider);
 
-  for (let c of await client.getClasses()) {
+  for (const c of await client.getClasses()) {
     console.log(`-`, c.name);
 
-    for (let a of await client.getAssignments(c.id)) {
+    for (const a of await client.getAssignments(c.id)) {
       console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
     }
   }
