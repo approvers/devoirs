@@ -1,27 +1,23 @@
-import { ApiClientBase } from './base';
-import { ITokenProvider } from '../token/provider';
+import { ApiProxy } from './proxy';
 import { Class } from '../../models/class';
 import { Assignment } from '../../models/assignment';
 
-const baseUrl = 'https://assignments.onenote.com/api/v1.0';
-
-export class ApiClient extends ApiClientBase {
+export class ApiClient {
 
   constructor(
-    tokenProvider: ITokenProvider,
+    private proxy: ApiProxy,
   ) {
-    super(baseUrl, tokenProvider);
   }
 
   async getClasses(): Promise<Class[]> {
-    return await this.request(
+    return await this.proxy.request(
       'GET',
       '/edu/me/classes',
     );
   }
 
   async getAssignments(classId: string): Promise<Assignment[]> {
-    return await this.request(
+    return await this.proxy.request(
       'GET',
       `/edu/classes/${classId}/assignments`,
     );
