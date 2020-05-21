@@ -15,9 +15,9 @@ export class ApiClientBase {
 
   protected async request<T>(method: Method, path: string, refreshToken: boolean = false): Promise<T> {
     const url = this.baseUrl + path;
-    const token = await ((
+    const token = await (
        refreshToken ? this.tokenProvider.refresh() : this.tokenProvider.get()
-    ));
+    );
 
     const options: RequestOptions = {
       method,
