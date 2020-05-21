@@ -1,7 +1,7 @@
+import { IncomingMessage } from 'http';
 import { request, RequestOptions } from 'https';
 
 import { ITokenProvider } from '../token/provider';
-import { IncomingMessage } from 'http';
 
 export type Method = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
 
