@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { format } from 'util';
 import { readFile, stat, writeFile } from 'fs/promises';
 
 import { ITokenStorage } from './index';
@@ -27,7 +28,16 @@ export class FilesystemTokenStorage implements ITokenStorage {
   }
 
   async load(): Promise<string> {
-    return await this.exists() ? null : await readFile(this.path, {
+    if (!(await this.exists())) {
+      throw new Error(
+        format(
+          'File not exists or not a file: %d',
+          this.path,
+        ),
+      );
+    }
+
+    return await readFile(this.path, {
       encoding: this.encoding,
     });
   }
