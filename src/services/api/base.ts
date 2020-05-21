@@ -31,10 +31,11 @@ export class ApiClientBase {
         let data = '';
 
         if (response.statusCode === 401) {
-          return this.request(method, path, true);
+          return resolve(
+            this.request(method, path, true)
+          );
         } else if (response.statusCode !== 200) {
-          reject(response);
-          return;
+          return reject(response);
         }
 
         response.on('data', chunk => data += chunk);
