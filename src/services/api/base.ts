@@ -31,7 +31,9 @@ export class ApiClientBase {
           return resolve(
             this.request(method, path, true)
           );
-        } else if (response.statusCode !== 200) {
+        }
+
+        if (response.statusCode !== 200) {
           return reject(response);
         }
 
