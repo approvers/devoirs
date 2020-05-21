@@ -42,7 +42,11 @@ export class ApiProxy {
 
         response.on('data', chunk => data += chunk);
         response.on('end', () => {
-          resolve(JSON.parse(data)['value'] as T);
+          try {
+            resolve(JSON.parse(data)['value'] as T);
+          } catch (error) {
+            reject(error);
+          }
         });
       };
 
