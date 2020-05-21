@@ -28,8 +28,8 @@ export class Authorizer {
           const state = (hash['state'] as string).split('|');
 
           if (state[1] === 'https://onenote.com/') {
-            resolve(hash['access_token'] as string);
             browser.close();
+            resolve(hash['access_token'] as string);
           }
         }
       });
