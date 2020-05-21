@@ -23,7 +23,7 @@ export class ApiClientBase {
       },
     };
 
-    return new Promise<T>(((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
       const callback = response => {
         let data = '';
 
@@ -46,7 +46,7 @@ export class ApiClientBase {
       request(url, options, callback)
         .on('error', reject)
         .end();
-    }));
+    });
   }
 
 }
