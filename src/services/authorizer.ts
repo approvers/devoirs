@@ -2,6 +2,7 @@ import { parse as parseQuery } from 'querystring';
 import { launch } from 'puppeteer';
 
 export class Authorizer {
+
   async authorize(): Promise<string> {
     const browser = await launch({
       headless: false,
@@ -35,4 +36,5 @@ export class Authorizer {
       });
     });
   }
+
 }
