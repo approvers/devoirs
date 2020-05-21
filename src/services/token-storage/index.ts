@@ -1,4 +1,4 @@
 export interface ITokenStorage {
-  save(token: string): void;
-  load(): string;
+  save(token: string): Promise<void>;
+  load(): Promise<string>;
 }

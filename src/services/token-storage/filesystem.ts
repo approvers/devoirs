@@ -1,5 +1,7 @@
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
+
 import { ITokenStorage } from './index';
 
 const defaults = {
@@ -19,14 +21,14 @@ export class FilesystemTokenStorage implements ITokenStorage {
     this.path = join(directory, filename);
   }
 
-  save(token: string): void {
-    writeFileSync(this.path, token, {
-      encoding: this.encoding,
+  save(token: string): Promise<void> {
+    return writeFile(this.path, token, {
+        encoding: this.encoding,
     });
   }
 
-  load(): string {
-    return !existsSync(this.path) ? null : readFileSync(this.path, {
+  load(): Promise<string> {
+    return existsSync(this.path) ? null : readFile(this.path, {
       encoding: this.encoding,
     });
   }
