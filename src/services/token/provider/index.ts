@@ -1,4 +1,6 @@
+import { Token } from '../../authorizer';
+
 export interface ITokenProvider {
-  get: () => Promise<string>;
-  refresh: () => Promise<string>;
+  get: () => Promise<Token>;
+  refresh: () => Promise<Token>;
 }

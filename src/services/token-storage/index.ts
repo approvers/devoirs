@@ -1,4 +1,6 @@
+import { Token } from '../authorizer';
+
 export interface ITokenStorage {
-  save(token: string): Promise<void>;
-  load(): Promise<string>;
+  save(token: Token): Promise<void>;
+  load(): Promise<Token>;
 }

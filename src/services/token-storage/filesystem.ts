@@ -3,6 +3,7 @@ import { format } from 'util';
 import { promises } from 'fs';
 
 import { ITokenStorage } from './index';
+import { Token } from '../authorizer';
 
 const { readFile, stat, writeFile } = promises;
 
@@ -23,13 +24,13 @@ export class FilesystemTokenStorage implements ITokenStorage {
     this.path = join(directory, filename);
   }
 
-  save(token: string): Promise<void> {
+  save(token: Token): Promise<void> {
     return writeFile(this.path, token, {
         encoding: this.encoding,
     });
   }
 
-  async load(): Promise<string> {
+  async load(): Promise<Token> {
     if (!(await this.exists())) {
       throw new Error(
         format(

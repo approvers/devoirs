@@ -1,9 +1,11 @@
 import { parse as parseQuery } from 'querystring';
 import { launch } from 'puppeteer';
 
+export type Token = string;
+
 export class Authorizer {
 
-  async authorize(): Promise<string> {
+  async authorize(): Promise<Token> {
     const browser = await launch({
       headless: false,
       args: [
@@ -19,7 +21,7 @@ export class Authorizer {
       console.debug('>', request.method(), request.url());
     });
 
-    return new Promise(resolve => {
+    return new Promise<Token>(resolve => {
       page.on('response', response => {
         console.debug('<', response.status(), response.statusText());
 
@@ -30,7 +32,7 @@ export class Authorizer {
 
           if (state[1] === 'https://onenote.com/') {
             browser.close();
-            resolve(hash['access_token'] as string);
+            resolve(hash['access_token'] as Token);
           }
         }
       });

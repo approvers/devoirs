@@ -1,6 +1,6 @@
 import { ITokenProvider } from '.';
 import { ITokenStorage } from '../../token-storage';
-import { Authorizer } from '../../authorizer';
+import { Authorizer, Token } from '../../authorizer';
 
 export class SavedTokenProvider implements ITokenProvider {
 
@@ -10,11 +10,11 @@ export class SavedTokenProvider implements ITokenProvider {
   ) {
   }
 
-  async get(): Promise<string> {
+  async get(): Promise<Token> {
     return this.storage.load();
   }
 
-  async refresh(): Promise<string> {
+  async refresh(): Promise<Token> {
     const token = await this.authorizer.authorize();
     await this.storage.save(token);
 
