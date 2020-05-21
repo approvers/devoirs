@@ -1,8 +1,10 @@
 import { join } from 'path';
 import { format } from 'util';
-import { readFile, stat, writeFile } from 'fs/promises';
+import { promises } from 'fs';
 
 import { ITokenStorage } from './index';
+
+const { readFile, stat, writeFile } = promises;
 
 const defaults = {
   filename: 'token.dat',
