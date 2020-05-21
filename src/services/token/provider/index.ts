@@ -1,6 +1,4 @@
 export interface ITokenProvider {
-  get?: () => string;
-  refresh?: () => string;
-  getAsync?: () => Promise<string>;
-  refreshAsync?: () => Promise<string>;
+  get: () => Promise<string>;
+  refresh: () => Promise<string>;
 }

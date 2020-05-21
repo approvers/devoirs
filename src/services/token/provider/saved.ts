@@ -10,11 +10,13 @@ export class SavedTokenProvider implements ITokenProvider {
   ) {
   }
 
-  get(): string {
-    return this.storage.load();
+  async get(): Promise<string> {
+    return new Promise(resolve => {
+      resolve(this.storage.load());
+    });
   }
 
-  async refreshAsync(): Promise<string> {
+  async refresh(): Promise<string> {
     const token = await this.authorizer.authorize();
     this.storage.save(token);
 

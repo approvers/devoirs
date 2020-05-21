@@ -1,7 +1,6 @@
 import { request } from "https";
 
 import { ITokenProvider } from '../token/provider';
-import { asyncOrSync } from '../../utilities/async-or-sync';
 
 export class ApiClientBase {
 
@@ -14,9 +13,7 @@ export class ApiClientBase {
   protected async request<T>(method: string, path: string, refreshToken: boolean = false): Promise<T> {
     const url = this.baseUrl + path;
     const token = await ((
-      refreshToken
-        ? asyncOrSync(this.tokenProvider.refreshAsync, this.tokenProvider.refresh, this.tokenProvider)
-        : asyncOrSync(this.tokenProvider.getAsync, this.tokenProvider.get, this.tokenProvider)
+      refreshToken ? this.tokenProvider.refresh : this.tokenProvider.get
     )());
 
     const options = {
