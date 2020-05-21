@@ -21,7 +21,7 @@ export class Authorizer {
       console.debug('>', request.method(), request.url());
     });
 
-    return new Promise<Token>(resolve => {
+    return new Promise<Token>((resolve, reject) => {
       page.on('response', response => {
         console.debug('<', response.status(), response.statusText());
 
@@ -32,7 +32,13 @@ export class Authorizer {
 
           if (state[1] === 'https://onenote.com/') {
             browser.close();
-            resolve(hash['access_token'] as Token);
+
+            const token = hash['access_token'] as Token;
+            if (token) {
+              return resolve(hash['access_token'] as Token);
+            }
+
+            return reject('Failed to get the access token.');
           }
         }
       });
