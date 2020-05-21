@@ -1,7 +1,10 @@
+import { ClassId } from './class';
+
+export type AssignmentId = string;
+
 export interface Assignment {
-  id: string;
-  classId: string;
-  channelId: string;
+  id: AssignmentId;
+  classId: ClassId;
   displayName: string;
   isCompleted: boolean;
 }

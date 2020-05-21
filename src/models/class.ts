@@ -1,4 +1,6 @@
+export type ClassId = string;
+
 export interface Class {
-  id: string;
+  id: ClassId;
   name: string;
 }
