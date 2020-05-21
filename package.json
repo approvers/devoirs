@@ -17,5 +17,14 @@
     "microsoft-365",
     "microsoft-teams"
   ],
-  "scripts": {}
+  "scripts": {
+    "start": "ts-node src/main.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.4",
+    "@types/puppeteer": "^2.1.0",
+    "puppeteer": "^3.1.0",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
+  }
 }
