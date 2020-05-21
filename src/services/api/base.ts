@@ -1,6 +1,9 @@
-import { request } from "https";
+import { request, RequestOptions } from 'https';
 
 import { ITokenProvider } from '../token/provider';
+import { IncomingMessage } from 'http';
+
+export type Method = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
 
 export class ApiClientBase {
 
@@ -10,13 +13,13 @@ export class ApiClientBase {
   ) {
   }
 
-  protected async request<T>(method: string, path: string, refreshToken: boolean = false): Promise<T> {
+  protected async request<T>(method: Method, path: string, refreshToken: boolean = false): Promise<T> {
     const url = this.baseUrl + path;
     const token = await ((
       refreshToken ? this.tokenProvider.refresh : this.tokenProvider.get
     )());
 
-    const options = {
+    const options: RequestOptions = {
       method,
       headers: {
         'authorization': `Bearer ${token}`,
@@ -24,7 +27,7 @@ export class ApiClientBase {
     };
 
     return new Promise<T>((resolve, reject) => {
-      const callback = response => {
+      const callback = (response: IncomingMessage) => {
         let data = '';
 
         if (response.statusCode === 401) {
