@@ -1,3 +1,5 @@
 /node_modules/
-
+/chromium/
+/packages/
+/index.js
 *.dat
