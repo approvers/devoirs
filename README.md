@@ -2,8 +2,6 @@
   <img src="assets/header.svg" alt="Header">
 </div>
 
----
-
 ## 📷 Screenshot
 ![Screenshot](https://pbs.twimg.com/media/EYbd0LMVAAA4hoa?format=png&name=small)
 
