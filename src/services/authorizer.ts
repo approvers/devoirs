@@ -17,13 +17,14 @@ export class Authorizer {
     const pages = await browser.pages();
     const page = pages.length > 0 ? pages[0] : await browser.newPage();
 
+    // noinspection JSUnusedLocalSymbols
     page.on('request', request => {
-      console.debug('>', request.method(), request.url());
+      // console.debug('>', request.method(), request.url());
     });
 
     return new Promise<Token>((resolve, reject) => {
       page.on('response', response => {
-        console.debug('<', response.status(), response.statusText());
+        // console.debug('<', response.status(), response.statusText());
 
         if (response.status() === 302) {
           const location = response.headers()['location'];
