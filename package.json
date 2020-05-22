@@ -3,6 +3,7 @@
   "description": "Lists assignments in all classes on Microsoft 365 Education.",
   "version": "0.1.0",
   "main": "index.js",
+  "bin": "index.js",
   "author": "Naoki Ikeguchi <root@siketyan.dev>",
   "license": "MIT",
   "homepage": "https://github.com/approvers/devoirs#readme",
