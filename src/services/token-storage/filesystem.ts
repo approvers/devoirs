@@ -34,7 +34,7 @@ export class FilesystemTokenStorage implements ITokenStorage {
     if (!(await this.exists())) {
       throw new Error(
         format(
-          'File not exists or not a file: %d',
+          'File not exists or not a file: %s',
           this.path,
         ),
       );
@@ -46,7 +46,15 @@ export class FilesystemTokenStorage implements ITokenStorage {
   }
 
   async exists(): Promise<boolean> {
-    return (await stat(this.path)).isFile();
+    try {
+      return (await stat(this.path)).isFile();
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        return false;
+      }
+
+      throw error;
+    }
   }
 
 }

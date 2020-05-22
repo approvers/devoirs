@@ -11,6 +11,10 @@ export class SavedTokenProvider implements ITokenProvider {
   }
 
   async get(): Promise<Token> {
+    if (!(await this.storage.exists())) {
+      return this.refresh();
+    }
+
     return this.storage.load();
   }
 
