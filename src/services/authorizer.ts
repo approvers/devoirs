@@ -1,7 +1,7 @@
 import { parse as parseQuery } from 'querystring';
 import { launch } from 'puppeteer-core';
 
-import { ChromiumResolver } from './chromium-resolver';
+import { ChromiumResolver } from './chromium/resolver';
 
 export type Token = string;
 

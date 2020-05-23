@@ -1,24 +1,19 @@
-import { createReadStream, createWriteStream, readdir, stat, Dirent, PathLike, Stats, promises, constants } from 'fs';
-import { platform, tmpdir } from 'os';
+import { createReadStream, createWriteStream, readdir, Dirent, PathLike, promises, constants } from 'fs';
+import { tmpdir } from 'os';
 import { join } from 'path';
 
 const { chmod, mkdir } = promises;
 const { S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IXGRP, S_IROTH, S_IXOTH } = constants;
 
-type ChromiumContext = {
-  directory: string;
-  executable: string;
-};
-
 export class ChromiumResolver {
 
   constructor(
-    private baseDirectory: string,
+    private context: ChromiumContext,
   ) {
   }
 
   async resolve(): Promise<string> {
-    const context = await this.getChromiumContext();
+    const context = this.context;
     const chromiumDirectory = context.directory;
     const temporaryDirectory = join(tmpdir(), '.devoirs-chromium');
 
@@ -79,68 +74,6 @@ export class ChromiumResolver {
         }
 
         resolve(dirents);
-      });
-    });
-  }
-
-  private async getChromiumContext(): Promise<ChromiumContext> {
-    const chromiumDirectory = await this.getChromiumDirectory();
-    const getDirectory = name => join(chromiumDirectory, name);
-    const target = platform();
-
-    if (target === 'win32') {
-      return {
-        directory: getDirectory('chrome-win'),
-        executable: 'chrome.exe',
-      };
-    }
-
-    if (target === 'darwin') {
-      return {
-        directory: getDirectory('chrome-mac'),
-        executable: 'Chromium.app/Contents/MacOS/Chromium',
-      };
-    }
-
-    if (target === 'linux') {
-      return {
-        directory: getDirectory('chrome-linux'),
-        executable: 'chrome',
-      };
-    }
-
-    throw new Error('Unsupported platform: ' + target);
-  }
-
-  private async getChromiumDirectory(): Promise<string> {
-    const defaultDirectory = join(this.baseDirectory, 'chromium');
-    if (await this.isDirectoryExists(defaultDirectory)) {
-      return defaultDirectory;
-    }
-
-    const fallbackDirectory = join(this.baseDirectory, '..', 'chromium');
-    if (await this.isDirectoryExists(fallbackDirectory)) {
-      return fallbackDirectory;
-    }
-
-    throw new Error(
-      'Failed to resolve Chromium. Have you downloaded it?',
-    );
-  }
-
-  // noinspection JSMethodCanBeStatic
-  private isDirectoryExists(path: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      stat(path, (error: NodeJS.ErrnoException, stats: Stats) => {
-        if (error) {
-          if (error?.code !== 'ENOENT') {
-            return reject(error);
-          }
-
-          return resolve(false);
-        }
-
-        resolve(stats.isDirectory());
       });
     });
   }
