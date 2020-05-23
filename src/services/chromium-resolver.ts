@@ -86,21 +86,21 @@ export class ChromiumResolver {
       return {
         directory: getDirectory('chrome-win'),
         executable: 'chrome.exe',
-      }
+      };
     }
 
     if (target === 'darwin') {
       return {
         directory: getDirectory('chrome-mac'),
         executable: 'Chromium.app/Contents/MacOS/Chromium',
-      }
+      };
     }
 
     if (target === 'linux') {
       return {
         directory: getDirectory('chrome-linux'),
         executable: 'chrome',
-      }
+      };
     }
 
     throw new Error('Unsupported platform: ' + target);
