@@ -1,14 +1,23 @@
 import { parse as parseQuery } from 'querystring';
-import { launch } from 'puppeteer';
+import { launch } from 'puppeteer-core';
+
+import { ChromiumResolver } from './chromium/resolver';
 
 export type Token = string;
 
 export class Authorizer {
 
+  constructor(
+    private chromiumResolver: ChromiumResolver,
+  ) {
+  }
+
   async authorize(): Promise<Token> {
     const browser = await launch({
+      executablePath: await this.chromiumResolver.resolve(),
       headless: false,
       args: [
+        '--no-sandbox',
         '--window-size=800,600',
         '--app=https://teams.microsoft.com/_#/apps/66aeee93-507d-479a-a3ef-8f494af43945/sections/classroom'
       ]
