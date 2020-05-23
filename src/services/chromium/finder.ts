@@ -1,6 +1,7 @@
 import { join } from "path";
-import { platform } from "os";
 import { stat, Stats } from 'fs';
+
+import { ChromiumContext, createChromiumContext } from './context';
 
 export class ChromiumFinder {
 
@@ -10,32 +11,9 @@ export class ChromiumFinder {
   }
 
   async find(): Promise<ChromiumContext> {
-    const chromiumDirectory = await this.getChromiumDirectory();
-    const getDirectory = name => join(chromiumDirectory, name);
-    const target = platform();
-
-    if (target === 'win32') {
-      return {
-        directory: getDirectory('chrome-win'),
-        executable: 'chrome.exe',
-      };
-    }
-
-    if (target === 'darwin') {
-      return {
-        directory: getDirectory('chrome-mac'),
-        executable: 'Chromium.app/Contents/MacOS/Chromium',
-      };
-    }
-
-    if (target === 'linux') {
-      return {
-        directory: getDirectory('chrome-linux'),
-        executable: 'chrome',
-      };
-    }
-
-    throw new Error('Unsupported platform: ' + target);
+    return createChromiumContext(
+      await this.getChromiumDirectory(),
+    );
   }
 
   private async getChromiumDirectory(): Promise<string> {
