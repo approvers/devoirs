@@ -69,10 +69,10 @@ export class ChromiumResolver {
     return new Promise<Dirent[]>((resolve, reject) => {
       readdir(path, { withFileTypes: true }, (error: Error | null, dirents: Dirent[]) => {
         if (error) {
-          reject(error);
-        } else {
-          resolve(dirents);
+          return reject(error);
         }
+
+        resolve(dirents);
       });
     });
   }
