@@ -42,7 +42,7 @@ export class ChromiumFinder {
     return new Promise<boolean>((resolve, reject) => {
       stat(path, (error: NodeJS.ErrnoException, stats: Stats) => {
         if (error) {
-          if (error?.code !== 'ENOENT') {
+          if (error.code !== 'ENOENT') {
             return reject(error);
           }
 
