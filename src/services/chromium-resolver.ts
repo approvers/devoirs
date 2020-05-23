@@ -1,8 +1,9 @@
-import { createReadStream, createWriteStream, readdir, stat as statAsync, Dirent, PathLike, Stats, promises } from 'fs';
+import { createReadStream, createWriteStream, readdir, stat, Dirent, PathLike, Stats, promises, constants } from 'fs';
 import { platform, tmpdir } from 'os';
 import { join } from 'path';
 
 const { chmod, mkdir } = promises;
+const { S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IXGRP, S_IROTH, S_IXOTH } = constants;
 
 type ChromiumContext = {
   directory: string;
@@ -25,7 +26,12 @@ export class ChromiumResolver {
     await this.copyDirectory(chromiumDirectory, temporaryDirectory);
 
     const executable = join(temporaryDirectory, context.executable);
-    await chmod(executable, 0o755);
+
+    // Change mode to `rwx r-x r-x`
+    await chmod(
+      executable,
+      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH,  // 755
+    );
 
     return executable;
   }
@@ -125,7 +131,7 @@ export class ChromiumResolver {
   // noinspection JSMethodCanBeStatic
   private isDirectoryExists(path: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      statAsync(path, (error: NodeJS.ErrnoException, stats: Stats) => {
+      stat(path, (error: NodeJS.ErrnoException, stats: Stats) => {
         if (error) {
           if (error?.code !== 'ENOENT') {
             return reject(error);
