@@ -10,14 +10,14 @@ const baseDirectory = join(__dirname, '..');
 const packages = join(baseDirectory, 'packages');
 
 (async () => {
-
-  try {
-    await mkdir(packages);
-  } catch (error) {
-    if (error?.code !== 'EEXIST') {
-      throw error;
-    }
-  }
+  await (
+    mkdir(packages)
+      .catch((error: NodeJS.ErrnoException) => {
+        if (error?.code !== 'EEXIST') {
+          throw error;
+        }
+      })
+  );
 
   for (const target of targets) {
     const config = {

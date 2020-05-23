@@ -40,15 +40,16 @@ const unzip = (from: string, to: string) => new Promise((resolve, reject) => {
 });
 
 (async () => {
-  try {
-    await mkdir(baseDirectory, {
+  await (
+    mkdir(baseDirectory, {
       recursive: true,
-    });
-  } catch (error) {
-    if (error?.code !== 'EEXIST') {
-      throw error;
-    }
-  }
+    })
+      .catch((error: NodeJS.ErrnoException) => {
+        if (error?.code !== 'EEXIST') {
+          throw error;
+        }
+      })
+  );
 
   for (const target of targets) {
     const source = getUrl(target);
