@@ -19,6 +19,7 @@
     "microsoft-teams"
   ],
   "scripts": {
+    "lint": "eslint src scripts",
     "build": "webpack",
     "start": "ts-node ./src/main.ts",
     "download": "ts-node ./scripts/download.ts 756035",
