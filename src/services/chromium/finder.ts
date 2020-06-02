@@ -1,19 +1,13 @@
-import { join } from "path";
+import { join } from 'path';
 import { stat, Stats } from 'fs';
 
 import { ChromiumContext, createChromiumContext } from './context';
 
 export class ChromiumFinder {
-
-  constructor(
-    private baseDirectory: string,
-  ) {
-  }
+  constructor(private baseDirectory: string) {}
 
   async find(): Promise<ChromiumContext> {
-    return createChromiumContext(
-      await this.getChromiumDirectory(),
-    );
+    return createChromiumContext(await this.getChromiumDirectory());
   }
 
   private async getChromiumDirectory(): Promise<string> {
@@ -23,9 +17,7 @@ export class ChromiumFinder {
     return this.tryDirectory(defaultDirectory)
       .catch(() => this.tryDirectory(fallbackDirectory))
       .catch(() => {
-        throw new Error(
-          'Failed to resolve Chromium. Have you downloaded it?',
-        );
+        throw new Error('Failed to resolve Chromium. Have you downloaded it?');
       });
   }
 
@@ -53,5 +45,4 @@ export class ChromiumFinder {
       });
     });
   }
-
 }

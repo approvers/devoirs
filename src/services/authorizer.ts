@@ -6,11 +6,7 @@ import { ChromiumResolver } from './chromium/resolver';
 export type Token = string;
 
 export class Authorizer {
-
-  constructor(
-    private chromiumResolver: ChromiumResolver,
-  ) {
-  }
+  constructor(private chromiumResolver: ChromiumResolver) {}
 
   async authorize(): Promise<Token> {
     const browser = await launch({
@@ -19,20 +15,20 @@ export class Authorizer {
       args: [
         '--no-sandbox',
         '--window-size=800,600',
-        '--app=https://teams.microsoft.com/_#/apps/66aeee93-507d-479a-a3ef-8f494af43945/sections/classroom'
-      ]
+        '--app=https://teams.microsoft.com/_#/apps/66aeee93-507d-479a-a3ef-8f494af43945/sections/classroom',
+      ],
     });
 
     const pages = await browser.pages();
     const page = pages.length > 0 ? pages[0] : await browser.newPage();
 
-    // noinspection JSUnusedLocalSymbols
-    page.on('request', request => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    page.on('request', (_request) => {
       // console.debug('>', request.method(), request.url());
     });
 
     return new Promise<Token>((resolve, reject) => {
-      page.on('response', response => {
+      page.on('response', (response) => {
         // console.debug('<', response.status(), response.statusText());
 
         if (response.status() === 302) {
@@ -54,5 +50,4 @@ export class Authorizer {
       });
     });
   }
-
 }
