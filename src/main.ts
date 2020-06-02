@@ -9,7 +9,7 @@ import { ChromiumFinder } from './services/chromium/finder';
 const baseUrl = 'https://assignments.onenote.com/api/v1.0';
 
 (async () => {
-  const chromium = await (new ChromiumFinder(__dirname)).find();
+  const chromium = await new ChromiumFinder(__dirname).find();
   const resolver = new ChromiumResolver(chromium);
   const authorizer = new Authorizer(resolver);
   const tokenStorage = new FilesystemTokenStorage(process.cwd());
@@ -24,8 +24,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
       console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
     }
   }
-})()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

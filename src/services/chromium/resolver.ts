@@ -1,18 +1,30 @@
-import { createReadStream, createWriteStream, readdir, Dirent, PathLike, promises, constants } from 'fs';
+import {
+  createReadStream,
+  createWriteStream,
+  readdir,
+  Dirent,
+  PathLike,
+  promises,
+  constants,
+} from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
 import { ChromiumContext } from './context';
 
 const { chmod, mkdir } = promises;
-const { S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IXGRP, S_IROTH, S_IXOTH } = constants;
+const {
+  S_IRUSR,
+  S_IWUSR,
+  S_IXUSR,
+  S_IRGRP,
+  S_IXGRP,
+  S_IROTH,
+  S_IXOTH,
+} = constants;
 
 export class ChromiumResolver {
-
-  constructor(
-    private context: ChromiumContext,
-  ) {
-  }
+  constructor(private context: ChromiumContext) {}
 
   async resolve(): Promise<string> {
     const context = this.context;
@@ -27,7 +39,7 @@ export class ChromiumResolver {
     // Change mode to `rwx r-x r-x`
     await chmod(
       executable,
-      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH,  // 755
+      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH // 755
     );
 
     return executable;
@@ -70,14 +82,17 @@ export class ChromiumResolver {
 
   private readDirectory(path: PathLike): Promise<Dirent[]> {
     return new Promise<Dirent[]>((resolve, reject) => {
-      readdir(path, { withFileTypes: true }, (error: Error | null, dirents: Dirent[]) => {
-        if (error) {
-          return reject(error);
-        }
+      readdir(
+        path,
+        { withFileTypes: true },
+        (error: Error | null, dirents: Dirent[]) => {
+          if (error) {
+            return reject(error);
+          }
 
-        resolve(dirents);
-      });
+          resolve(dirents);
+        }
+      );
     });
   }
-
 }

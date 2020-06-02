@@ -1,13 +1,15 @@
-import { join } from "path";
-import { platform } from "os";
+import { join } from 'path';
+import { platform } from 'os';
 
 export type ChromiumContext = {
   directory: string;
   executable: string;
 };
 
-export function createChromiumContext(chromiumDirectory: string) {
-  const getDirectory = name => join(chromiumDirectory, name);
+export function createChromiumContext(
+  chromiumDirectory: string
+): ChromiumContext {
+  const getDirectory = (name) => join(chromiumDirectory, name);
   const target = platform();
 
   if (target === 'win32') {
