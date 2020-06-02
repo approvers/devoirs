@@ -2,6 +2,8 @@ import { createReadStream, createWriteStream, readdir, Dirent, PathLike, promise
 import { tmpdir } from 'os';
 import { join } from 'path';
 
+import { ChromiumContext } from './context';
+
 const { chmod, mkdir } = promises;
 const { S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IXGRP, S_IROTH, S_IXOTH } = constants;
 
