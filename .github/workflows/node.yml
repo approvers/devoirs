@@ -4,7 +4,7 @@ on:
   - push
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,3 +21,23 @@ jobs:
 
       - run: npm ci
       - run: npm run lint
+
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - run: npm ci
+      - run: npm run package
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: packages
+          path: packages
