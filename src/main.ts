@@ -17,11 +17,22 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
 
+  let date;
+
   for (const c of await client.getClasses()) {
     console.log(`-`, c.name);
 
     for (const a of await client.getAssignments(c.id)) {
-      console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+      (date = new Date(a.dueDateTime)),
+        date.setTime(date.getTime()),
+        console.log(
+          '\t',
+          a['isCompleted'] ? '✔' : '❗',
+          a.displayName,
+          '締切:',
+          date.toLocaleDateString(),
+          date.toLocaleTimeString('ja-JP')
+        );
     }
   }
 })().catch((error) => {
