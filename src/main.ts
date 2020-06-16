@@ -18,10 +18,15 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const client = new ApiClient(proxy);
 
   for (const c of await client.getClasses()) {
-    console.log(`-`, c.name);
-
+    let isAssignments: boolean = false;
     for (const a of await client.getAssignments(c.id)) {
-      console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+      if(!a['isCompleted']){
+        if(!isAssignments){
+          isAssignments = !isAssignments;
+          console.log(`-`, c.name);
+        }
+        console.log('\t', a.displayName);
+      }
     }
   }
 })().catch((error) => {
