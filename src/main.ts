@@ -23,7 +23,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   for (const c of await client.getClasses()) {
     let hasAssignments: boolean = false;
     for (const a of await client.getAssignments(c.id)) {
-      switch(index){
+      switch(modes[index]){
         case 'Assigned':
           if(!a['isCompleted']){
             if(!hasAssignments){
@@ -43,8 +43,13 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
           }
           break;
         case 'All':
-          console.log(`-`, c.name);
-          console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+          if(a['isCompleted'] || !a['isCompleted']){
+            if(!hasAssignments){
+              hasAssignments = !hasAssignments;
+              console.log(`-`, c.name);
+            }
+            console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+          }
           break;
         default:
           break;
