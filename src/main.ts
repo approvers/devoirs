@@ -16,19 +16,42 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const tokenProvider = new SavedTokenProvider(tokenStorage, authorizer);
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
+  const readlineSync = require('readline-sync');
+  const modes = ['Assigned','Completed',"All"];
+  let index = readlineSync.keyInSelect(modes,'Select mode.');
 
   for (const c of await client.getClasses()) {
     let hasAssignments: boolean = false;
     for (const a of await client.getAssignments(c.id)) {
-      if(!a['isCompleted']){
-        if(!hasAssignments){
-          hasAssignments = !hasAssignments;
+      switch(index){
+        case 'Assigned':
+          if(!a['isCompleted']){
+            if(!hasAssignments){
+              hasAssignments = !hasAssignments;
+              console.log(`-`, c.name);
+            }
+            console.log('\t', '❗', a.displayName);
+          }
+          break;
+        case 'Completed':
+          if(a['isCompleted']){
+            if(!hasAssignments){
+              hasAssignments = !hasAssignments;
+              console.log(`-`, c.name);
+            }
+            console.log('\t', '✔', a.displayName);
+          }
+          break;
+        case 'All':
           console.log(`-`, c.name);
-        }
-        console.log('\t', a.displayName);
+          console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+          break;
+        default:
+          break;
       }
     }
   }
+  var keyHandler = readlineSync.question('Press any key.');
 })().catch((error) => {
   console.error(error);
   process.exit(1);
