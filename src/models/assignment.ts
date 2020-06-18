@@ -7,4 +7,5 @@ export interface Assignment {
   classId: ClassId;
   displayName: string;
   isCompleted: boolean;
+  dueDateTime: string;
 }

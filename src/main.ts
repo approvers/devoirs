@@ -30,7 +30,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
               hasAssignments = !hasAssignments;
               console.log(`-`, c.name);
             }
-            console.log('\t', '❗', a.displayName);
+            console.log('\t', '❗', a.dueDateTime, a.displayName);
           }
           break;
         case 'Completed':
@@ -39,7 +39,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
               hasAssignments = !hasAssignments;
               console.log(`-`, c.name);
             }
-            console.log('\t', '✔', a.displayName);
+            console.log('\t', '✔', a.dueDateTime, a.displayName);
           }
           break;
         case 'All':
@@ -48,7 +48,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
               hasAssignments = !hasAssignments;
               console.log(`-`, c.name);
             }
-            console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
+            console.log('\t', a.dueDateTime, a['isCompleted'] ? '✔' : '❗', a.displayName);
           }
           break;
         default:
