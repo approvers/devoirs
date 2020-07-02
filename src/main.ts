@@ -17,7 +17,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
   const readlineSync = require('readline-sync');
-  const modes = ['Assigned','Completed',"All"];
+  const modes = ['Assigned','Completed','All'];
   let index = readlineSync.keyInSelect(modes,'Select mode.');
 
   for (const c of await client.getClasses()) {
