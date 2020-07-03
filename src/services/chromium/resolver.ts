@@ -29,7 +29,7 @@ export class ChromiumResolver {
   async resolve(): Promise<string> {
     const context = this.context;
     const chromiumDirectory = context.directory;
-    const temporaryDirectory = join(tmpdir(), '.devoirs-chromium');
+    const temporaryDirectory = join(tmpdir(), '.devoirs', 'chromium');
 
     await this.createDirectory(temporaryDirectory);
     await this.copyDirectory(chromiumDirectory, temporaryDirectory);
@@ -48,7 +48,7 @@ export class ChromiumResolver {
   // noinspection JSMethodCanBeStatic
   private async createDirectory(path: string): Promise<void> {
     try {
-      await mkdir(path);
+      await mkdir(path, { recursive: true });
     } catch (error) {
       if (error?.code !== 'EEXIST') {
         throw error;
