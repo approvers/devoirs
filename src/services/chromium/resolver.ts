@@ -7,7 +7,7 @@ import {
   promises,
   constants,
 } from 'fs';
-import { tmpdir } from 'os';
+import { tmpdir, platform } from 'os';
 import { join } from 'path';
 
 import { ChromiumContext } from './context';
@@ -36,11 +36,13 @@ export class ChromiumResolver {
 
     const executable = join(temporaryDirectory, context.executable);
 
-    // Change mode to `rwx r-x r-x`
-    await chmod(
-      executable,
-      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH // 755
-    );
+    if (platform() !== 'win32') {
+      // Change mode to `rwx r-x r-x`
+      await chmod(
+        executable,
+        S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH // 755
+      );
+    }
 
     return executable;
   }
