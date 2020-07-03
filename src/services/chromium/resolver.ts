@@ -48,7 +48,7 @@ export class ChromiumResolver {
   // noinspection JSMethodCanBeStatic
   private async createDirectory(path: string): Promise<void> {
     try {
-      await mkdir(path);
+      await mkdir(path, { recursive: true });
     } catch (error) {
       if (error?.code !== 'EEXIST') {
         throw error;
