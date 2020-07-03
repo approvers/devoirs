@@ -5,7 +5,6 @@ import { FilesystemTokenStorage } from './services/token-storage/filesystem';
 import { Authorizer } from './services/authorizer';
 import { ChromiumResolver } from './services/chromium/resolver';
 import { ChromiumFinder } from './services/chromium/finder';
-import { SortAssignments } from './sort';
 import { createSortAssignments } from './sort';
 
 const baseUrl = 'https://assignments.onenote.com/api/v1.0';
@@ -93,7 +92,6 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
     classId = a.classId;
   }
 
-  var keyHandler = readlineSync.question('Press Enter key.');
 })().catch((error) => {
   console.error(error);
   process.exit(1);
