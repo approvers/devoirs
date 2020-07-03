@@ -49,6 +49,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "moment": "^2.27.0",
     "readline-sync": "^1.4.10"
   }
 }
