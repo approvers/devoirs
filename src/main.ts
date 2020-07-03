@@ -19,13 +19,19 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const client = new ApiClient(proxy);
   const assignments = await createSortAssignments(client);
   const readlineSync = require('readline-sync');
-  
-  const statusModes = ['Assigned','Completed','All'];
-  let selectedStatus = readlineSync.keyInSelect(statusModes,'Please select the status of assignments.');
-  const sortModes = ['Time','Class'];
-  let selectedSort = readlineSync.keyInSelect(sortModes,'Please select a sorting method.');
-  
-  switch(sortModes[selectedSort]){
+
+  const statusModes = ['Assigned', 'Completed', 'All'];
+  const selectedStatus = readlineSync.keyInSelect(
+    statusModes,
+    'Please select the status of assignments.'
+  );
+  const sortModes = ['Time', 'Class'];
+  const selectedSort = readlineSync.keyInSelect(
+    sortModes,
+    'Please select a sorting method.'
+  );
+
+  switch (sortModes[selectedSort]) {
     case 'Time':
       assignments.sortCheck();
       assignments.sortClass();
@@ -41,24 +47,24 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
     default:
       break;
   }
-  
-  let classId:string;
-  let className:string;
-  
-  for (const a of assignments.getAssignments()){
-    if(classId !=a.classId){
+
+  let classId: string;
+  let className: string;
+
+  for (const a of assignments.getAssignments()) {
+    if (classId != a.classId) {
       for (const c of await client.getClasses()) {
-        if(a.classId == c.id){
+        if (a.classId == c.id) {
           className = c.name;
           break;
         }
       }
     }
 
-    switch(statusModes[selectedStatus]){
+    switch (statusModes[selectedStatus]) {
       case 'Assigned':
-        if(!a['isCompleted']){
-          if(className){
+        if (!a['isCompleted']) {
+          if (className) {
             console.log(`-`, className);
             className = null;
           }
@@ -67,8 +73,8 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
         break;
 
       case 'Completed':
-        if(a['isCompleted']){
-          if(className){
+        if (a['isCompleted']) {
+          if (className) {
             console.log(`-`, className);
             className = null;
           }
@@ -77,12 +83,17 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
         break;
 
       case 'All':
-        if(a){
-          if(className){
+        if (a) {
+          if (className) {
             console.log(`-`, className);
             className = null;
           }
-          console.log('\t', a['isCompleted'] ? '✔ ' : '❗', a.dueDateTime, a.displayName);
+          console.log(
+            '\t',
+            a['isCompleted'] ? '✔ ' : '❗',
+            a.dueDateTime,
+            a.displayName
+          );
         }
         break;
 
@@ -91,7 +102,6 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
     }
     classId = a.classId;
   }
-
 })().catch((error) => {
   console.error(error);
   process.exit(1);
