@@ -1,4 +1,6 @@
 import { parse as parseQuery } from 'querystring';
+import { join } from 'path';
+import { tmpdir } from 'os';
 import { launch } from 'puppeteer-core';
 
 import { ChromiumResolver } from './chromium/resolver';
@@ -12,6 +14,8 @@ export class Authorizer {
     const browser = await launch({
       executablePath: await this.chromiumResolver.resolve(),
       headless: false,
+      defaultViewport: null,
+      userDataDir: join(tmpdir(), '.devoirs', 'data'),
       args: [
         '--no-sandbox',
         '--window-size=800,600',

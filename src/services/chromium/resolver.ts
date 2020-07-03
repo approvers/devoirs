@@ -29,7 +29,7 @@ export class ChromiumResolver {
   async resolve(): Promise<string> {
     const context = this.context;
     const chromiumDirectory = context.directory;
-    const temporaryDirectory = join(tmpdir(), '.devoirs-chromium');
+    const temporaryDirectory = join(tmpdir(), '.devoirs', 'chromium');
 
     await this.createDirectory(temporaryDirectory);
     await this.copyDirectory(chromiumDirectory, temporaryDirectory);
