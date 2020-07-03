@@ -45,7 +45,7 @@ export class SortAssignments {
 
 }
 
-export const createSortAssignments = async (client) =>{
+export const createSortAssignments = async (client:ApiClient) =>{
     const obj = new SortAssignments(client);
     await obj.init();
     return obj;
