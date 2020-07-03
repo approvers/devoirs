@@ -1,9 +1,12 @@
+import { parse as parseUrl } from 'url';
 import { parse as parseQuery } from 'querystring';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { launch } from 'puppeteer-core';
 
 import { ChromiumResolver } from './chromium/resolver';
+
+type CDPWindow = { windowId: string };
 
 export type Token = string;
 
@@ -25,6 +28,20 @@ export class Authorizer {
 
     const pages = await browser.pages();
     const page = pages.length > 0 ? pages[0] : await browser.newPage();
+    const session = await page.target().createCDPSession();
+    const meta = await session.send('Browser.getWindowForTarget');
+
+    page.on('load', () => {
+      const { host } = parseUrl(page.url());
+
+      session.send('Browser.setWindowBounds', {
+        windowId: (meta as CDPWindow).windowId,
+        bounds: {
+          windowState:
+            host === 'login.microsoftonline.com' ? 'normal' : 'minimized',
+        },
+      });
+    });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     page.on('request', (_request) => {
