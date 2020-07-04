@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>Devoirs</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="icon.svg">
+    </head>
+    <body>
+        <header>
+            <img src="icon.svg" alt="Devoirs">
+            <button id="exclude-completed">☑</button>
+            <button id="collapse-all">⏫</button>
+            <button id="expand-all">⏬</button>
+        </header>
+        <main>
+            <ul id="classes"></ul>
+        </main>
+        <script>
+          document.getElementById('exclude-completed').addEventListener('click', () => {
+            document.getElementById('classes').classList.toggle('exclude-completed');
+          });
+          document.getElementById('collapse-all').addEventListener('click', () => {
+            document.getElementById('classes').childNodes.forEach(element => {
+              element.classList.add('is-hidden');
+            });
+          });
+          document.getElementById('expand-all').addEventListener('click', () => {
+            document.getElementById('classes').childNodes.forEach(element => {
+              element.classList.remove('is-hidden');
+            });
+          });
+        </script>
+    </body>
+</html>
