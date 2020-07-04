@@ -1,5 +1,6 @@
 import { ApiClient } from './services/api/client';
 import { Assignment } from './models/assignment';
+import * as Moment from 'moment';
 
 export class SortAssignments {
   constructor(private client: ApiClient) {}
@@ -17,8 +18,7 @@ export class SortAssignments {
   }
 
   sortTime(): void {
-    const moment = require('moment');
-    this.Assignments.sort((a, b) => moment(a.dueDateTime).diff(b.dueDateTime));
+    this.Assignments.sort((a, b) => Moment(a.dueDateTime).diff(b.dueDateTime));
   }
 
   sortClass(): void {

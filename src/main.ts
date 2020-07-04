@@ -6,6 +6,7 @@ import { Authorizer } from './services/authorizer';
 import { ChromiumResolver } from './services/chromium/resolver';
 import { ChromiumFinder } from './services/chromium/finder';
 import { createSortAssignments } from './sort';
+import * as readlineSync from 'readline-sync';
 
 const baseUrl = 'https://assignments.onenote.com/api/v1.0';
 
@@ -18,7 +19,6 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
   const assignments = await createSortAssignments(client);
-  const readlineSync = require('readline-sync');
 
   const statusModes = ['Assigned', 'Completed', 'All'];
   const selectedStatus = readlineSync.keyInSelect(
