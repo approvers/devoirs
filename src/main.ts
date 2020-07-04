@@ -6,6 +6,7 @@ import { Authorizer } from './services/authorizer';
 import { ChromiumResolver } from './services/chromium/resolver';
 import { ChromiumFinder } from './services/chromium/finder';
 import { ChromiumLauncher } from './services/chromium/launcher';
+import { GuiClient } from './services/gui/client';
 
 const baseUrl = 'https://assignments.onenote.com/api/v1.0';
 
@@ -18,14 +19,9 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const tokenProvider = new SavedTokenProvider(tokenStorage, authorizer);
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
+  const gui = new GuiClient(client, launcher, process.cwd());
 
-  for (const c of await client.getClasses()) {
-    console.log(`-`, c.name);
-
-    for (const a of await client.getAssignments(c.id)) {
-      console.log('\t', a['isCompleted'] ? '✔' : '❗', a.displayName);
-    }
-  }
+  await gui.start();
 })().catch((error) => {
   console.error(error);
   process.exit(1);
