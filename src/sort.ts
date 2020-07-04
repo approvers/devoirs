@@ -4,7 +4,7 @@ import { Assignment } from './models/assignment';
 export class SortAssignments {
   constructor(private client: ApiClient) {}
   Assignments: Assignment[] = [];
-  async init() {
+  async init(): Promise<void> {
     for (const c of await this.client.getClasses()) {
       for (const a of await this.client.getAssignments(c.id)) {
         this.Assignments.push(a);
@@ -12,16 +12,16 @@ export class SortAssignments {
     }
   }
 
-  getAssignments() {
+  getAssignments(): Assignment[] {
     return this.Assignments;
   }
 
-  sortTime() {
+  sortTime(): void {
     const moment = require('moment');
     this.Assignments.sort((a, b) => moment(a.dueDateTime).diff(b.dueDateTime));
   }
 
-  sortClass() {
+  sortClass(): void {
     this.Assignments.sort((a, b) => {
       if (a.classId > b.classId) {
         return 1;
@@ -31,7 +31,7 @@ export class SortAssignments {
     });
   }
 
-  sortCheck() {
+  sortCheck(): void {
     this.Assignments.sort((a, b) => {
       if (a.isCompleted > b.isCompleted) {
         return 1;
@@ -42,7 +42,9 @@ export class SortAssignments {
   }
 }
 
-export const createSortAssignments = async (client: ApiClient) => {
+export const createSortAssignments = async (
+  client: ApiClient
+): Promise<SortAssignments> => {
   const obj = new SortAssignments(client);
   await obj.init();
   return obj;
