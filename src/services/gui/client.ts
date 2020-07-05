@@ -27,13 +27,19 @@ export class GuiClient {
         .sort((a: Assignment, b: Assignment) =>
           a.dueDateTime.localeCompare(b.dueDateTime)
         )
-        .map((a) => ({
-          ...a,
-          dueDateTime: moment(a.dueDateTime).format('ll LTS'),
-        }));
+        .map((a) => {
+          const dueDateTime = moment(a.dueDateTime);
+          const nowDateTime = moment();
+
+          return {
+            ...a,
+            dueDateTime: dueDateTime.format('ll LTS'),
+            isOverdue: !a.isCompleted && dueDateTime.isBefore(nowDateTime),
+          };
+        });
 
       await page.evaluate(
-        (c: Class, assignments: Assignment[]) => {
+        (c: Class, assignments: (Assignment & { isOverdue: boolean })[]) => {
           const $classes = document.getElementById('classes');
           const $class = document.createElement('li');
           const $name = document.createElement('span');
@@ -44,6 +50,7 @@ export class GuiClient {
 
             $assignment.textContent = a.displayName;
             $assignment.setAttribute('data-due-datetime', a.dueDateTime);
+            $assignment.setAttribute('data-overdue', a.isOverdue ? '1' : '0');
             $assignment.setAttribute(
               'data-completed',
               a.isCompleted ? '1' : '0'

@@ -98,8 +98,11 @@ ul > li > ul > li > * {
 }
 
 ul > li > ul > li:before {
+    display: block;
     font-family: 'Apple Color Emoji', 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     margin-right: 10px;
+    text-align: center;
+    width: 1.5em;
 }
 
 ul > li > ul > li[data-completed='1'] {
@@ -111,11 +114,18 @@ ul > li > ul > li[data-completed='1']:before {
 }
 
 ul > li > ul > li[data-completed='0'] {
-    border-color: red;
+    border-color: orange;
 }
 
 ul > li > ul > li[data-completed='0']:before {
-    content: '❌';
+    content: '⚠';
+}
+ul > li > ul > li[data-overdue='1'] {
+    border-color: red;
+}
+
+ul > li > ul > li[data-overdue='1']:before {
+    content: '❗'
 }
 
 ul > li > ul > li:after {
