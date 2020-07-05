@@ -19,7 +19,7 @@ const packages = join(baseDirectory, 'packages');
   for (const target of targets) {
     const config = {
       pkg: {
-        assets: `../chromium/${target.name}/**/*`,
+        assets: ['../assets/**/*', `../chromium/${target.name}/**/*`],
       },
     };
 
