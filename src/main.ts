@@ -4,15 +4,17 @@ import { SavedTokenProvider } from './services/token/provider/saved';
 import { FilesystemTokenStorage } from './services/token-storage/filesystem';
 import { Authorizer } from './services/authorizer';
 import { ChromiumResolver } from './services/chromium/resolver';
-import { ChromiumFinder } from './services/chromium/finder';
 import { ChromiumLauncher } from './services/chromium/launcher';
 import { GuiClient } from './services/gui/client';
+import { ResourceFinder } from './services/resource/finder';
+import { ResourceResolver } from './services/resource/resolver';
 
 const baseUrl = 'https://assignments.onenote.com/api/v1.0';
 
 (async () => {
-  const chromium = await new ChromiumFinder(__dirname).find();
-  const resolver = new ChromiumResolver(chromium);
+  const resourceFinder = new ResourceFinder(__dirname);
+  const resourceResolver = new ResourceResolver(resourceFinder);
+  const resolver = new ChromiumResolver(resourceResolver);
   const launcher = new ChromiumLauncher(resolver);
   const authorizer = new Authorizer(launcher);
   const tokenStorage = new FilesystemTokenStorage(process.cwd());

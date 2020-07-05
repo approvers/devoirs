@@ -6,10 +6,8 @@ export type ChromiumContext = {
   executable: string;
 };
 
-export function createChromiumContext(
-  chromiumDirectory: string
-): ChromiumContext {
-  const getDirectory = (name) => join(chromiumDirectory, name);
+export function createChromiumContext(): ChromiumContext {
+  const getDirectory = (name) => join('chromium', name);
   const target = platform();
 
   if (target === 'win32') {
