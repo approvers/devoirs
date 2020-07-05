@@ -1,23 +1,25 @@
 import * as moment from 'moment';
 
 import { join } from 'path';
+import { JSONObject } from 'puppeteer-core';
 
 import { ApiClient } from '../api/client';
 import { ChromiumLauncher } from '../chromium/launcher';
+import { ResourceResolver } from '../resource/resolver';
 import { Assignment } from '../../models/assignment';
 import { Class } from '../../models/class';
-import { JSONObject } from 'puppeteer-core';
 
 export class GuiClient {
   constructor(
     private apiClient: ApiClient,
     private chromiumLauncher: ChromiumLauncher,
-    private baseDirectory: string
+    private resourceResolver: ResourceResolver
   ) {}
 
   async start(): Promise<void> {
+    const assetsDirectory = await this.resourceResolver.resolve('assets');
     const page = await this.chromiumLauncher.launch(
-      join(this.baseDirectory, 'assets', 'index.html')
+      join(assetsDirectory, 'index.html')
     );
 
     for (const c of await this.apiClient.getClasses()) {

@@ -21,7 +21,7 @@ const baseUrl = 'https://assignments.onenote.com/api/v1.0';
   const tokenProvider = new SavedTokenProvider(tokenStorage, authorizer);
   const proxy = new ApiProxy(baseUrl, tokenProvider);
   const client = new ApiClient(proxy);
-  const gui = new GuiClient(client, launcher, process.cwd());
+  const gui = new GuiClient(client, launcher, resourceResolver);
 
   await gui.start();
 })().catch((error) => {
