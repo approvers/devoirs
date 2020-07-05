@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { join } from 'path';
 
 import { ApiClient } from '../api/client';
@@ -19,10 +21,14 @@ export class GuiClient {
     );
 
     for (const c of await this.apiClient.getClasses()) {
-      const assignments = await this.apiClient.getAssignments(c.id);
-      const sorted = assignments.sort((a: Assignment, b: Assignment) => {
-        return a.dueDateTime.localeCompare(b.dueDateTime);
-      });
+      const assignments = (await this.apiClient.getAssignments(c.id))
+        .sort((a: Assignment, b: Assignment) =>
+          a.dueDateTime.localeCompare(b.dueDateTime)
+        )
+        .map((a) => ({
+          ...a,
+          dueDateTime: moment(a.dueDateTime).format('ll LTS'),
+        }));
 
       await page.evaluate(
         (c: Class, assignments: Assignment[]) => {
@@ -54,7 +60,7 @@ export class GuiClient {
           $classes.appendChild($class);
         },
         (c as unknown) as JSONObject,
-        (sorted as unknown) as JSONObject
+        (assignments as unknown) as JSONObject
       );
     }
   }
