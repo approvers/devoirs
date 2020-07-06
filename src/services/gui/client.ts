@@ -6,8 +6,19 @@ import { JSONObject } from 'puppeteer-core';
 import { ApiClient } from '../api/client';
 import { ChromiumLauncher } from '../chromium/launcher';
 import { ResourceResolver } from '../resource/resolver';
-import { Assignment } from '../../models/assignment';
+import { Assignment, compare } from '../../models/assignment';
 import { Class } from '../../models/class';
+
+const transform = (assignment: Assignment) => {
+  const dueDateTime = moment(assignment.dueDateTime);
+  const nowDateTime = moment();
+
+  return {
+    ...assignment,
+    dueDateTime: dueDateTime.format('ll LTS'),
+    isOverdue: !assignment.isCompleted && dueDateTime.isBefore(nowDateTime),
+  };
+};
 
 export class GuiClient {
   constructor(
@@ -24,19 +35,8 @@ export class GuiClient {
 
     for (const c of await this.apiClient.getClasses()) {
       const assignments = (await this.apiClient.getAssignments(c.id))
-        .sort((a: Assignment, b: Assignment) =>
-          a.dueDateTime.localeCompare(b.dueDateTime)
-        )
-        .map((a) => {
-          const dueDateTime = moment(a.dueDateTime);
-          const nowDateTime = moment();
-
-          return {
-            ...a,
-            dueDateTime: dueDateTime.format('ll LTS'),
-            isOverdue: !a.isCompleted && dueDateTime.isBefore(nowDateTime),
-          };
-        });
+        .sort(compare)
+        .map(transform);
 
       await page.evaluate(
         (c: Class, assignments: (Assignment & { isOverdue: boolean })[]) => {

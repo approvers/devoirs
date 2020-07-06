@@ -10,3 +10,7 @@ export interface Assignment {
   displayName: string;
   isCompleted: boolean;
 }
+
+export function compare(a: Assignment, b: Assignment): number {
+  return a.dueDateTime.localeCompare(b.dueDateTime);
+}
