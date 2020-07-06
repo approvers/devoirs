@@ -3,7 +3,7 @@ import { format } from 'util';
 import { promises } from 'fs';
 
 import { ITokenStorage } from './index';
-import { Token } from '../authorizer';
+import { Token } from '../../authorizer';
 
 const { readFile, stat, writeFile } = promises;
 

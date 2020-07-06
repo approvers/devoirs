@@ -1,7 +1,7 @@
 import { ApiClient } from './services/api/client';
 import { ApiProxy } from './services/api/proxy';
 import { SavedTokenProvider } from './services/token/provider/saved';
-import { FilesystemTokenStorage } from './services/token-storage/filesystem';
+import { FilesystemTokenStorage } from './services/token/storage/filesystem';
 import { Authorizer } from './services/authorizer';
 import { ChromiumResolver } from './services/chromium/resolver';
 import { ChromiumLauncher } from './services/chromium/launcher';
