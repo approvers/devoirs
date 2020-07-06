@@ -1,33 +1,20 @@
 import { parse as parseUrl } from 'url';
 import { parse as parseQuery } from 'querystring';
-import { join } from 'path';
-import { tmpdir } from 'os';
-import { launch } from 'puppeteer-core';
 
-import { ChromiumResolver } from './chromium/resolver';
+import { ChromiumLauncher } from './chromium/launcher';
 
 type CDPWindow = { windowId: string };
 
 export type Token = string;
 
 export class Authorizer {
-  constructor(private chromiumResolver: ChromiumResolver) {}
+  constructor(private chromiumLauncher: ChromiumLauncher) {}
 
   async authorize(): Promise<Token> {
-    const browser = await launch({
-      executablePath: await this.chromiumResolver.resolve(),
-      headless: false,
-      defaultViewport: null,
-      userDataDir: join(tmpdir(), '.devoirs', 'data'),
-      args: [
-        '--no-sandbox',
-        '--window-size=800,600',
-        '--app=https://teams.microsoft.com/_#/apps/66aeee93-507d-479a-a3ef-8f494af43945/sections/classroom',
-      ],
-    });
+    const page = await this.chromiumLauncher.launch(
+      'https://teams.microsoft.com/_#/apps/66aeee93-507d-479a-a3ef-8f494af43945/sections/classroom'
+    );
 
-    const pages = await browser.pages();
-    const page = pages.length > 0 ? pages[0] : await browser.newPage();
     const session = await page.target().createCDPSession();
     const meta = await session.send('Browser.getWindowForTarget');
 
@@ -58,7 +45,7 @@ export class Authorizer {
           const state = (hash['state'] as string).split('|');
 
           if (state[1] === 'https://onenote.com/') {
-            browser.close();
+            page.close();
 
             const token = hash['access_token'] as Token;
             if (token) {

@@ -1,23 +1,17 @@
 import { join } from 'path';
 import { stat, Stats } from 'fs';
 
-import { ChromiumContext, createChromiumContext } from './context';
-
-export class ChromiumFinder {
+export class ResourceFinder {
   constructor(private baseDirectory: string) {}
 
-  async find(): Promise<ChromiumContext> {
-    return createChromiumContext(await this.getChromiumDirectory());
-  }
-
-  private async getChromiumDirectory(): Promise<string> {
-    const defaultDirectory = join(this.baseDirectory, 'chromium');
-    const fallbackDirectory = join(this.baseDirectory, '..', 'chromium');
+  async find(...path: string[]): Promise<string> {
+    const defaultDirectory = join(this.baseDirectory, ...path);
+    const fallbackDirectory = join(this.baseDirectory, '..', ...path);
 
     return this.tryDirectory(defaultDirectory)
       .catch(() => this.tryDirectory(fallbackDirectory))
       .catch(() => {
-        throw new Error('Failed to resolve Chromium. Have you downloaded it?');
+        throw new Error(`Failed to resolve directory: ${path.join('/')}`);
       });
   }
 

@@ -1,0 +1,138 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #ddd;
+    font-family: 'Segoe UI', 'Yu Gothic UI', sans-serif;
+}
+
+header {
+    align-items: center;
+    background-color: #464775;
+    color: #f6f6f6;
+    display: flex;
+    margin: 0;
+    padding: 15px 40px 15px 20px;
+    position: fixed;
+    width: 100%;
+}
+
+header > img {
+    height: 32px;
+    margin: -5px auto -5px 0;
+    width: 32px;
+}
+
+header > button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    filter: grayscale(100%);
+    font-family: 'Apple Color Emoji', 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 24px;
+    margin: 0 36px 0 -32px;
+    outline: none;
+    padding: 0;
+    transition: all .2s ease-in-out;
+}
+
+header > button:hover {
+    filter: none;
+}
+
+main {
+    padding-top: 65px;
+}
+
+ul {
+    list-style: none;
+}
+
+ul#classes {
+    margin: 0;
+    padding: 10px;
+}
+
+ul > li {
+    padding: 0 5px;
+}
+
+ul > li > span {
+    background-color: #f6f6f6;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    display: flex;
+    margin: 3px;
+    padding: 10px 15px;
+}
+
+ul > li > span:after {
+    content: '〉';
+    transform: rotate(-90deg);
+    transition: all .3s ease-in-out;
+    margin: 0 0 0 auto;
+}
+
+ul > li.is-hidden > span:after {
+    transform: rotate(90deg);
+}
+
+ul > li.is-hidden > ul {
+    display: none;
+}
+
+ul > li > ul > li {
+    background-color: #f6f6f6;
+    border: 1px solid;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+    display: flex;
+    margin: 3px;
+    padding: 10px 10px;
+}
+
+ul > li > ul > li > * {
+    display: block;
+}
+
+ul > li > ul > li:before {
+    display: block;
+    font-family: 'Apple Color Emoji', 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    margin-right: 10px;
+    text-align: center;
+    width: 1.5em;
+}
+
+ul > li > ul > li[data-completed='1'] {
+    border-color: green;
+}
+
+ul > li > ul > li[data-completed='1']:before {
+    content: '✔';
+}
+
+ul > li > ul > li[data-completed='0'] {
+    border-color: orange;
+}
+
+ul > li > ul > li[data-completed='0']:before {
+    content: '⚠';
+}
+ul > li > ul > li[data-overdue='1'] {
+    border-color: red;
+}
+
+ul > li > ul > li[data-overdue='1']:before {
+    content: '❗'
+}
+
+ul > li > ul > li:after {
+    content: attr(data-due-datetime);
+    margin: 0 0 0 auto;
+}
+
+ul.exclude-completed > li > ul > li[data-completed='1'] {
+    display: none;
+}
