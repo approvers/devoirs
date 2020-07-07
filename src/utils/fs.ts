@@ -21,15 +21,15 @@ export async function createDirectory(path: string): Promise<void> {
 }
 
 export async function copyDirectory(from: string, to: string): Promise<void> {
-  for (const entry of await this.readDirectory(from)) {
+  for (const entry of await readDirectory(from)) {
     const source = join(from, entry.name);
     const destination = join(to, entry.name);
 
     if (entry.isDirectory()) {
-      await this.createDirectory(destination);
-      await this.copyDirectory(source, destination);
+      await createDirectory(destination);
+      await copyDirectory(source, destination);
     } else if (entry.isFile()) {
-      await this.copyFile(source, destination);
+      await copyFile(source, destination);
     }
   }
 }
@@ -64,7 +64,7 @@ export async function chmodDirectory(
   path: string,
   mode: number
 ): Promise<void> {
-  for (const entry of await this.readDirectory(path)) {
+  for (const entry of await readDirectory(path)) {
     const target = join(path, entry.name);
 
     if (entry.isDirectory()) {
