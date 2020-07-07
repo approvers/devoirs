@@ -1,11 +1,11 @@
-import { promises, constants } from 'fs';
+import { constants } from 'fs';
 import { platform } from 'os';
 import { join } from 'path';
 
 import { createChromiumContext } from './context';
+import { chmodDirectory } from '../../utils/fs';
 import { ResourceResolver } from '../resource/resolver';
 
-const { chmod } = promises;
 const {
   S_IRUSR,
   S_IWUSR,
@@ -27,8 +27,8 @@ export class ChromiumResolver {
 
     if (platform() !== 'win32') {
       // Change mode to `rwx r-x r-x`
-      await chmod(
-        executable,
+      await chmodDirectory(
+        temporaryDirectory,
         S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH // 755
       );
     }
