@@ -15,7 +15,7 @@ const getDirectory = () => {
       return join(process.env.HOME, 'Library', 'Preferences');
 
     case 'linux':
-      return join(process.env.HOME, '.config');
+      return join(process.env.HOME, '.cache');
 
     default:
       throw new Error('Unsupported platform: ' + target);
