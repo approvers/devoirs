@@ -31,7 +31,7 @@ export class ChromiumResolver {
       S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH; // 755
 
     if (target !== 'win32') {
-      await chmodDirectory(chromiumDirectory, mode);
+      await chmodDirectory(temporaryDirectory, mode);
     }
 
     return executable;
