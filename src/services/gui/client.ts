@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 import { join } from 'path';
+import { format } from 'util';
 import { JSONObject } from 'puppeteer-core';
 
 import { ApiClient } from '../api/client';
@@ -29,8 +30,14 @@ export class GuiClient {
 
   async start(): Promise<void> {
     const assetsDirectory = await this.resourceResolver.resolve('assets');
+    const htmlPath = join(assetsDirectory, 'index.html');
     const page = await this.chromiumLauncher.launch(
-      join(assetsDirectory, 'index.html')
+      format(
+        'file://%s',
+        htmlPath.startsWith('/')
+          ? htmlPath
+          : format('/%s', htmlPath.replace('\\', '/'))
+      )
     );
 
     for (const c of await this.apiClient.getClasses()) {
