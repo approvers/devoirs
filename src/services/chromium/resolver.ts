@@ -25,13 +25,12 @@ export class ChromiumResolver {
     const temporaryDirectory = await this.resolver.resolve(chromiumDirectory);
     const executable = join(temporaryDirectory, context.executable);
 
-    // Change mode to `rwx r-x r-x`
-    const target = platform();
-    const mode =
-      S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH; // 755
-
-    if (target !== 'win32') {
-      await chmodDirectory(temporaryDirectory, mode);
+    if (platform() !== 'win32') {
+      // Change mode to `rwx r-x r-x`
+      await chmodDirectory(
+        temporaryDirectory,
+        S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH // 755
+      );
     }
 
     return executable;
