@@ -1,12 +1,16 @@
 import { join } from 'path';
-import { tmpdir } from 'os';
 import { launch, Page, Browser } from 'puppeteer-core';
+
+import { Appdata } from '../appdata';
 import { ChromiumResolver } from './resolver';
 
 export class ChromiumLauncher {
   private browser: Browser;
 
-  constructor(private chromiumResolver: ChromiumResolver) {}
+  constructor(
+    private appdata: Appdata,
+    private chromiumResolver: ChromiumResolver
+  ) {}
 
   async launch(url: string, width = 800, height = 600): Promise<Page> {
     if (!this.browser) {
@@ -14,7 +18,7 @@ export class ChromiumLauncher {
         executablePath: await this.chromiumResolver.resolve(),
         headless: false,
         defaultViewport: null,
-        userDataDir: join(tmpdir(), '.devoirs', 'data'),
+        userDataDir: join(await this.appdata.get(), 'data'),
         args: [
           '--no-sandbox',
           `--window-size=${width},${height}`,
