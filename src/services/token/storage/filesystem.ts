@@ -23,7 +23,7 @@ export class FilesystemTokenStorage implements ITokenStorage {
   async save(token: Token): Promise<void> {
     const path = await this.getPath();
 
-    return await writeFile(path, token, {
+    await writeFile(path, token, {
       encoding: this.encoding,
     });
   }
