@@ -7,19 +7,19 @@ const { mkdir } = promises;
 const getDirectory = () => {
   const target = platform();
 
-  if (target === 'win32') {
-    return process.env.APPDATA;
-  }
+  switch (target) {
+    case 'win32':
+      return process.env.APPDATA;
 
-  if (target === 'darwin') {
-    return join(process.env.HOME, 'Library', 'Preferences');
-  }
+    case 'darwin':
+      return join(process.env.HOME, 'Library', 'Preferences');
 
-  if (target === 'linux') {
-    return join(process.env.HOME, '.config');
-  }
+    case 'linux':
+      return join(process.env.HOME, '.config');
 
-  throw new Error('Unsupported platform: ' + target);
+    default:
+      throw new Error('Unsupported platform: ' + target);
+  }
 };
 
 export class Appdata {
