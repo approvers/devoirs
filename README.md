@@ -3,7 +3,7 @@
 </div>
 
 ## 📷 Screenshot
-![Screenshot](https://pbs.twimg.com/media/EYbd0LMVAAA4hoa?format=png&name=small)
+![Screenshot](https://pbs.twimg.com/media/EcVApv6X0AI7umn?format=png&name=large)
 
 ## ✔ Prerequisites
 - Node.js 13+
