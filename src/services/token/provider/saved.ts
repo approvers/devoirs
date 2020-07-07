@@ -1,5 +1,5 @@
 import { ITokenProvider } from '.';
-import { ITokenStorage } from '../../token-storage';
+import { ITokenStorage } from '../storage';
 import { Authorizer, Token } from '../../authorizer';
 
 export class SavedTokenProvider implements ITokenProvider {

@@ -3,7 +3,8 @@ import { format } from 'util';
 import { promises } from 'fs';
 
 import { ITokenStorage } from './index';
-import { Token } from '../authorizer';
+import { Token } from '../../authorizer';
+import { Appdata } from '../../appdata';
 
 const { readFile, stat, writeFile } = promises;
 
@@ -13,35 +14,37 @@ const defaults = {
 };
 
 export class FilesystemTokenStorage implements ITokenStorage {
-  private readonly path: string;
-
   constructor(
-    directory: string,
-    filename: string = defaults.filename,
+    private appdata: Appdata,
+    private filename: string = defaults.filename,
     private encoding: BufferEncoding = defaults.encoding
-  ) {
-    this.path = join(directory, filename);
-  }
+  ) {}
 
-  save(token: Token): Promise<void> {
-    return writeFile(this.path, token, {
+  async save(token: Token): Promise<void> {
+    const path = await this.getPath();
+
+    await writeFile(path, token, {
       encoding: this.encoding,
     });
   }
 
   async load(): Promise<Token> {
+    const path = await this.getPath();
+
     if (!(await this.exists())) {
-      throw new Error(format('File not exists or not a file: %s', this.path));
+      throw new Error(format('File not exists or not a file: %s', path));
     }
 
-    return await readFile(this.path, {
+    return await readFile(path, {
       encoding: this.encoding,
     });
   }
 
   async exists(): Promise<boolean> {
+    const path = await this.getPath();
+
     try {
-      return (await stat(this.path)).isFile();
+      return (await stat(path)).isFile();
     } catch (error) {
       if (error.code === 'ENOENT') {
         return false;
@@ -49,5 +52,9 @@ export class FilesystemTokenStorage implements ITokenStorage {
 
       throw error;
     }
+  }
+
+  private async getPath(): Promise<string> {
+    return join(await this.appdata.get(), this.filename);
   }
 }
