@@ -8,7 +8,7 @@ import {
   promises,
 } from 'fs';
 
-const { mkdir } = promises;
+const { chmod, mkdir } = promises;
 
 export async function createDirectory(path: string): Promise<void> {
   try {
@@ -58,4 +58,19 @@ export function readDirectory(path: PathLike): Promise<Dirent[]> {
       }
     );
   });
+}
+
+export async function chmodDirectory(
+  path: string,
+  mode: number
+): Promise<void> {
+  for (const entry of await this.readDirectory(path)) {
+    const target = join(path, entry.name);
+
+    if (entry.isDirectory()) {
+      await chmodDirectory(target, mode);
+    } else if (entry.isFile()) {
+      await chmod(target, mode);
+    }
+  }
 }
