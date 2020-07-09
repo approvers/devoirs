@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { join } from 'path';
+import { sep } from 'path';
 import { format } from 'util';
 import { JSONObject } from 'puppeteer-core';
 
@@ -9,6 +9,7 @@ import { ChromiumLauncher } from '../chromium/launcher';
 import { ResourceResolver } from '../resource/resolver';
 import { Assignment, compare } from '../../models/assignment';
 import { Class } from '../../models/class';
+import { encode } from '../../utils/url';
 
 const transform = (assignment: Assignment) => {
   const dueDateTime = moment(assignment.dueDateTime);
@@ -30,13 +31,10 @@ export class GuiClient {
 
   async start(): Promise<void> {
     const assetsDirectory = await this.resourceResolver.resolve('assets');
-    const htmlPath = join(assetsDirectory, 'index.html');
     const page = await this.chromiumLauncher.launch(
       format(
-        'file://%s',
-        htmlPath.startsWith('/')
-          ? htmlPath
-          : format('/%s', htmlPath.replace('\\', '/'))
+        'file:///%s',
+        [...assetsDirectory.split(sep).map(encode), 'index.html'].join('/')
       )
     );
 
