@@ -1,3 +1,8 @@
+## ⚠ Deprecated ⚠
+This project is no longer maintained because Microsoft Teams released the same function officialy.
+Future releases will be only security updates.
+Sorry for inconvinience, and thank you all current users.
+
 <div align="center">
   <img src="assets/header.svg" alt="Header">
 </div>
